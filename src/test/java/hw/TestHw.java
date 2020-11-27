@@ -91,6 +91,40 @@ public class TestHw {
         driver.manage().deleteCookieNamed("info");
     }
 
+    @Test
+    @Description("Тест на поиск в дудлах по дате")
+    public void testDate() {
+        driver.findElement(By.xpath("(//input[@aria-label='Мне повезёт!'])[2]")).click();
+        driver.findElement(By.xpath("(//a[@id='highlight-detail'])[1]")).click();
+        String date = driver.findElement(By.xpath("//div[@class='time']")).getText();
+        new Actions(driver)
+                .moveToElement(driver.findElement(By.xpath("//input[@placeholder='Поиск дудлов']")))
+                .click()
+                .sendKeys(date)
+                .sendKeys(ENTER)
+                .build()
+                .perform();
+    }
+
+    @Test
+    @Description("Тест на поиск обоев в картинках")
+    public void testWallpaper() {
+        driver.findElement(By.xpath("//a[text()='Картинки']")).click();
+        new Actions(driver)
+                .moveToElement(driver.findElement(By.xpath("//input[@title='Поиск']")))
+                .click()
+                .sendKeys(ConfProperties.getProperty("search"))
+                .sendKeys(ENTER)
+                .build()
+                .perform();
+        Assert.assertTrue(driver.findElement(By.xpath("//div[text()='Инструменты']")).isDisplayed());
+        driver.findElement(By.xpath("//div[text()='Инструменты']")).click();
+        driver.findElement(By.xpath("//div[text()='Размер']")).click();
+        driver.findElement(By.xpath("//span[text()='Большой']")).click();
+        driver.findElement(By.xpath("//div[text()='Тип']")).click();
+        driver.findElement(By.xpath("//span[text()='Рисунки']")).click();
+    }
+
     @AfterClass
     public static void tearDown() {
         driver.quit();
