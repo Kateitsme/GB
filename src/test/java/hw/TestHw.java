@@ -1,11 +1,12 @@
 package hw;
 
-import com.sun.org.glassfish.gmbal.Description;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -20,7 +21,7 @@ import static org.openqa.selenium.Keys.ENTER;
 public class TestHw {
     public static WebDriver driver;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         WebDriverManager.chromedriver().setup();
         //создание экземпляра драйвера
@@ -33,9 +34,9 @@ public class TestHw {
     }
 
     @Test
-    @Description("Тест на вход в лк")
+    @DisplayName("Тест на вход в лк")
     public void loginTest() throws InterruptedException {
-        WebElement login =  driver.findElement(By.xpath("//a[text()='Войти']"));
+        WebElement login = driver.findElement(By.xpath("//a[text()='Войти']"));
         Assert.assertTrue(login.isDisplayed());
         login.click();
         new Actions(driver)
@@ -54,11 +55,11 @@ public class TestHw {
     }
 
     @Test
-    @Description("Тест на изменение имени пользователя")
+    @DisplayName("Тест на изменение имени пользователя")
     public void changeUserInfo() throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         loginTest();
-        driver.manage().timeouts().pageLoadTimeout(10,TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
         new Actions(driver)
                 .moveToElement(driver.findElement(By.xpath("//img[@class='gb_Ha gbii']")))
                 .click()
@@ -67,9 +68,9 @@ public class TestHw {
         WebElement acc = driver.findElement(By.xpath("//a[text()='Управление аккаунтом Google']"));
         Assert.assertTrue(acc.isDisplayed());
         js.executeScript("arguments[0].click();", acc);
-        new WebDriverWait(driver,5).until(ExpectedConditions.numberOfWindowsToBe(2));
+        new WebDriverWait(driver, 5).until(ExpectedConditions.numberOfWindowsToBe(2));
         ArrayList<String> tabs = new ArrayList(driver.getWindowHandles());
-        tabs.forEach(tab->{
+        tabs.forEach(tab -> {
             System.out.println(tab);
             driver.switchTo().window(tab);
         });
@@ -77,7 +78,7 @@ public class TestHw {
         //WebElement info = driver.findElement(By.xpath("//a[@data-nav-type='1']/div[text()='Личная информация']"));
         //js.executeScript("arguments[0].click();", info);
         driver.navigate().to("https://myaccount.google.com/personal-info?pli=1");
-        js.executeScript("arguments[0].click();",driver
+        js.executeScript("arguments[0].click();", driver
                 .findElement(By.xpath("(//a[@class='VZLjze Wvetm I6g62c N5YmOc kJXJmd'])[1]")));
         new Actions(driver)
                 .moveToElement(driver.findElement(By.xpath(("(//input)[3]"))))
@@ -92,7 +93,7 @@ public class TestHw {
     }
 
     @Test
-    @Description("Тест на поиск в дудлах по дате")
+    @DisplayName("Тест на поиск в дудлах по дате")
     public void testDate() {
         driver.findElement(By.xpath("(//input[@aria-label='Мне повезёт!'])[2]")).click();
         driver.findElement(By.xpath("(//a[@id='highlight-detail'])[1]")).click();
@@ -107,7 +108,7 @@ public class TestHw {
     }
 
     @Test
-    @Description("Тест на поиск обоев в картинках")
+    @DisplayName("Тест на поиск обоев в картинках")
     public void testWallpaper() {
         driver.findElement(By.xpath("//a[text()='Картинки']")).click();
         new Actions(driver)
@@ -125,7 +126,7 @@ public class TestHw {
         driver.findElement(By.xpath("//span[text()='Рисунки']")).click();
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() {
         driver.quit();
     }
