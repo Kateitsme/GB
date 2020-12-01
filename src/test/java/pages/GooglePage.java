@@ -74,14 +74,17 @@ public class GooglePage {
     @FindBy(xpath = "//span[text()='Рисунки']")
     private WebElement drawings;
 
+    @Step(value = "Нажать кнопку войти")
     public void clickLogin(){
         loginButton.click();
     }
 
+    @Step(value = "Проверить кнопку войти")
     public boolean checkLogin(){
         return loginButton.isDisplayed();
     }
 
+    @Step(value = "Ввести логин")
     public void sendLogin(){
         new Actions(driver)
                 .moveToElement(login)
@@ -91,6 +94,7 @@ public class GooglePage {
                 .perform();
     }
 
+    @Step(value = "Ввести пароль")
     public void sendPassword(){
         new Actions(driver)
                 .moveToElement(password)
@@ -100,6 +104,7 @@ public class GooglePage {
                 .perform();
     }
 
+    @Step(value = "Нажать на иконку пользователя")
     public void clickUser(){
         new Actions(driver)
                 .moveToElement(userButton)
@@ -108,20 +113,23 @@ public class GooglePage {
                 .perform();
     }
 
+    @Step(value = "Проверка досупности кнопки входа в аккаунт")
     public boolean checkAccountButton(){
         return accountButton.isDisplayed();
     }
 
+    @Step(value = "Нажать кнопку входа в аккаунт")
     public void clickAccountButton(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", accountButton);
     }
-
+    @Step(value = "Нажать на кнопку изменения имени")
     public void clickNameChange(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", nameChange);
     }
 
+    @Step(value = "Ввести другое имя")
     public void sendName(){
         new Actions(driver)
                 .moveToElement(nameInput)
@@ -132,27 +140,28 @@ public class GooglePage {
                 .perform();
     }
 
+    @Step(value = "Сохранить изменения")
     public void clickSave(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", saveButton);
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Мне повезет!")
     public void clickLuckyButton(){
         luckyButton.click();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Подробнее")
     public void clickDetailsButton(){
         detailsButton.click();
     }
 
-    @Step
+    @Step(value = "Получить дату")
     public String getDate(){
         return time.getText();
     }
 
-    @Step
+    @Step(value = "Ввести дату в поиск")
     public void searchDate(){
         String date = getDate();
         new Actions(driver)
@@ -164,12 +173,12 @@ public class GooglePage {
                 .perform();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Картинки")
     public void clickPictures(){
         pictures.click();
     }
 
-    @Step
+    @Step(value = "Ввести в поиск картинки")
     public void searchPic(){
         new Actions(driver)
                 .moveToElement(search)
@@ -180,32 +189,32 @@ public class GooglePage {
                 .perform();
     }
 
-    @Step
+    @Step(value = "Проверка кнопки Настройки")
     public boolean checkTools(){
         return tools.isDisplayed();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Настройки")
     public void clickTools(){
         tools.click();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Размер")
     public void clickSize(){
         picSize.click();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Большой")
     public void clickLarge(){
         large.click();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Тип")
     public void clickType(){
         type.click();
     }
 
-    @Step
+    @Step(value = "Нажать кнопку Рисунки")
     public void clickDrawings(){
         drawings.click();
     }
