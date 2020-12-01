@@ -1,7 +1,9 @@
 package hw;
 
 
+import helpers.ScreenshotMaker;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Feature;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -17,9 +21,10 @@ import pages.GooglePage;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
+import java.util.logging.Level;
+@Feature("Тест google")
 public class TestHw {
-    public static WebDriver driver;
+    public static RemoteWebDriver driver;
     public static GooglePage googlePage;
     private static Logger logger = LoggerFactory.getLogger(TestHw.class);
 
@@ -28,6 +33,7 @@ public class TestHw {
         WebDriverManager.chromedriver().setup();
         //создание экземпляра драйвера
         driver = new ChromeDriver();
+        driver.setLogLevel(Level.INFO);
         googlePage = new GooglePage(driver);
         driver.manage().window().maximize();
         //задержка на выполнение теста = 10 сек.
@@ -47,6 +53,7 @@ public class TestHw {
         Thread.sleep(1000);
         googlePage.sendPassword();
         logger.info("User wrote password " + ConfProperties.getProperty("password"));
+        ScreenshotMaker.makeScreenshot(driver,"login.jpg");
     }
 
     @Test
@@ -71,6 +78,7 @@ public class TestHw {
         googlePage.sendName();
         logger.info("User wrote name" + ConfProperties.getProperty("name"));
         googlePage.clickSave();
+        ScreenshotMaker.makeScreenshot(driver,"changeName.jpg");
         driver.manage().addCookie(new Cookie("info", "november27"));
         logger.info("User added cookie");
         driver.manage().deleteCookieNamed("info");
@@ -85,6 +93,7 @@ public class TestHw {
         String date = googlePage.getDate();
         googlePage.searchDate();
         logger.info("User searched date " + date);
+        ScreenshotMaker.makeScreenshot(driver,"searchInDoodles.jpg");
     }
 
     @Test
@@ -99,10 +108,17 @@ public class TestHw {
         googlePage.clickLarge();
         googlePage.clickType();
         googlePage.clickDrawings();
+        ScreenshotMaker.makeScreenshot(driver,"searchWallpaper.jpg");
     }
 
     @AfterAll
     public static void tearDown() {
+        driver
+                .manage()
+                .logs()
+                .get(LogType.BROWSER)
+                .getAll()
+                .forEach(System.out::println);
         driver.quit();
     }
 }
